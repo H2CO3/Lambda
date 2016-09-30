@@ -66,15 +66,9 @@ std::unique_ptr<Node> SubstCtx::reduced_node_for_substitution(const Subs *subs) 
 Node::Node() {}
 Node::~Node() {}
 
-std::string Node::type_name() const noexcept {
-    const char *name = typeid(*this).name();
-    return name + strspn(name, "0123456789");
-}
-
 ////////// Func //////////
 Func::Func(std::string _parm, std::unique_ptr<Node> _body) : parm(std::move(_parm)),
-                                                             body(std::move(_body))
-{}
+                                                             body(std::move(_body)) {}
 
 std::unique_ptr<Node> Func::clone() const noexcept {
     return std::make_unique<Func>(parm, body->clone());
@@ -88,12 +82,9 @@ void Func::to_string(std::string *str) const noexcept {
 }
 
 std::unique_ptr<Node> Func::reduce(SubstCtx *ctx) const noexcept {
-    // take a note of the shadowing
+    // take note of the shadowing
     auto guard = ctx->register_shadow(parm);
-    return std::make_unique<Func>(
-        parm,
-        body->reduce(ctx)
-    );
+    return std::make_unique<Func>(parm, body->reduce(ctx));
 }
 
 ////////// Appl //////////

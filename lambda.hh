@@ -82,8 +82,6 @@ struct Node {
     virtual void to_string(std::string *) const noexcept = 0;
 
     virtual std::unique_ptr<Node> reduce(SubstCtx *) const noexcept = 0;
-
-    virtual std::string type_name() const noexcept;
 };
 
 struct Func : Node {
